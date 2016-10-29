@@ -3,8 +3,110 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <style>
+
+        td {
+            width: 1em;
+            height: 1em;
+            border: 1px solid #ccc;
+            border-radius: 100%;
+        }
+        .red {
+            background: red
+        }
+        .blue {
+            background: blue
+        }
+    </style>
 </head>
 <body>
+
+    <table id="gameTable">
+        <tbody>
+            <tr> <!-- 1 -->
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr> <!-- 2 -->
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr> <!-- 3 -->
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr> <!-- 4 -->
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr> <!-- 5 -->
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr> <!-- 6 -->
+                <td class="red"></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td class="blue"></td>
+                <td></td>
+                <td></td>
+            </tr>
+        </tbody>
+    </table>
+
+    <script>
+        var state = [
+            [null, 'blue', null, null, null, null, null],
+            [null, null, null, null, null, null, null],
+            [null, null, null, null, null, null, null],
+            [null, null, null, 'red', null, null, null],
+            [null, null, null, null, null, null, null],
+            ['red', null, null, null, null, 'blue', null]
+        ]
+
+        var elements = [].map.call(gameTable.getElementsByTagName('tr'), function(el){
+            return Array.from(el.getElementsByTagName('td'))
+        })
+
+
+        function render(){
+
+            state.forEach(function (row, i) {
+                row.forEach( function (cell, j) {
+
+                    elements[i][j].className =
+                        cell||''
+
+                })
+            })
+        }
+    </script>
 
 </body>
 </html>
