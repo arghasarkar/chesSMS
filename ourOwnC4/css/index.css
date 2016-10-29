@@ -1,0 +1,12 @@
+td {
+    width: 1em;
+    height: 1em;
+    border: 1px solid #ccc;
+    border-radius: 100%;
+}
+.red {
+    background: red
+}
+.blue {
+    background: blue
+}
