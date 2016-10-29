@@ -1,0 +1,11 @@
+.red {
+    color: red;
+    background-color: #FF0000;
+    font-family: Arial;
+}
+
+.blue {
+    color: blue;
+    font-family: Jokerman;
+    background-color: #0000FF;
+}

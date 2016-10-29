@@ -2,9 +2,11 @@
 <html>
 <head>
 <script type="text/javascript" src="canvasjs.min.js"></script>
+<link rel="stylesheet/css" type="text/css" href="style.css">
 <script type="text/javascript">
 
 window.onload = function () {
+    currTeam = 1;
     chart1 = new CanvasJS.Chart("chartContainer1",
     {
         title:{
@@ -59,6 +61,7 @@ window.onload = function () {
 
     // Main program
     refreshCharts();
+    setTeam();
 }
 
 function refreshCharts() {
@@ -78,6 +81,7 @@ function resetChart(chartNum) {
         { x: 60, y: 0, label: "Col 6"},
         { x: 70, y: 0, label: "Col 7"}
         ];
+        refreshCharts();
     }
 
     else if (chartNum == 2) {
@@ -90,6 +94,7 @@ function resetChart(chartNum) {
         { x: 60, y: 0, label: "Col 6"},
         { x: 70, y: 0, label: "Col 7"}
         ];
+        refreshCharts();
     }
 }
 
@@ -119,13 +124,87 @@ function addVote(pos, chartNum) {
     }
 }
 
+function fetchHighestVote(chartNum) {
+    var highVal = 0;
+    var colNum;
+    if (chartNum == 1) {
+        for (i = 0; i < 7; i++) {
+            if (chart1.options.data[0].dataPoints[i].y > highVal) {
+                highVal = chart1.options.data[0].dataPoints[i].y;
+                colNum = i;
+            }
+        }
+    }
+    else if (chartNum == 2) {
+        for (i = 0; i < 7; i++) {
+            if (chart2.options.data[0].dataPoints[i].y > highVal) {
+                highVal = chart2.options.data[0].dataPoints[i].y;
+                colNum = i;
+            }
+        }
+    }
+    console.log("Highest vote was col " + (colNum + 1));
+    return colNum;
+}
+
+function setTeam() {
+    currTeam = 1;
+    teamHead.innerText = "Red Team's Move";
+    teamHead.style.color = "red";
+}
+
+function switchTeam() {
+    if (currTeam == 1) {
+        currTeam = 2;
+        teamHead.innerText = "Blue Team's Move";
+        teamHead.style.color = "blue";
+    }
+
+    else if (currTeam == 2) {
+        currTeam = 1;
+        teamHead.innerText = "Red Team's Move";
+        teamHead.style.color = "red";
+    }
+}
+
+// Where the business end is
+function makeMove() {
+    if (currTeam == 1) {
+        redMove = fetchHighestVote(1);
+        console.log("Sent off Red move");
+        // Pass red move to board HTML
+        resetChart(1);
+        switchTeam();
+    }
+
+    else if (currTeam == 2) {
+        blueMove = fetchHighestVote(2);
+        console.log("Sent off Blue move");
+        // Pass red move to board HTML
+        resetChart(2);
+        switchTeam();
+    }
+}
+
 </script>
 </head>
 <body>
-    <div id="chartContainer1" style="height: 300px; width: 30%; position: relative; top: 300px;"></div>
-    <div id="chartContainer2" style="height: 300px; width: 30%; position: relative; left: 500px;"></div>
+
+    <h1 id="teamHead" align="center";>Red Team's Move</h3>
+    <table>
+        <tr>
+            <td>
+                <div id="chartContainer1" style="height: 300px; width: 40%; position: relative;"></div>
+            </td>
+            <td>
+                <div id="chartContainer2" style="height: 300px; width: 40%; position: relative; left: 500px;"></div>
+            </td>
+        </tr>
+    </table>
 
 
+
+    <!-- Testing Buttons -->
     <button onclick="addVote(0, 1)">Vote 1</button>
     <button onclick="addVote(1, 1)">Vote 2</button>
     <button onclick="addVote(2, 1)">Vote 3</button>
@@ -143,5 +222,12 @@ function addVote(pos, chartNum) {
     <button onclick="addVote(4, 2)">Vote 5</button>
     <button onclick="addVote(5, 2)">Vote 6</button>
     <button onclick="addVote(6, 2)">Vote 7</button>
+
+    <div></div>
+
+    <button onclick="switchTeam()">Switch Team</button>
+    <button onclick="fetchHighestVote(1)">Highest Vote Red</button>
+    <button onclick="fetchHighestVote(2)">Highest Vote Blue</button>
+    <button onclick="makeMove()">Make Move</button>
 </body>
 </html>
