@@ -80,7 +80,9 @@
 
         var channel = pusher.subscribe('test_channel');
         channel.bind('my_event', function(data) {
-            alert(data.message);
+            //alert(data.message);
+            console.log(data);
+            newMove(data.column, data.colour);
         });
     </script>
 
