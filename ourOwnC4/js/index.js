@@ -58,3 +58,7 @@ function getColumnHeight(column) {
     }
     return 0;
 }
+
+function printThing(thing) {
+    console.log(thing);
+}
