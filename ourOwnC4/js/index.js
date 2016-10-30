@@ -11,6 +11,11 @@ var NUM_OF_COLS = 7
     ['red', 'red', null, 'red', 'red', 'blue', null]
 ]*/
 
+/**
+ * null, 'red' and 'blue'
+ * @type {*[]}
+ */
+
 state = [
     [null, null, null, null, null, null, null],
     [null, null, null, null, null, null, null],
