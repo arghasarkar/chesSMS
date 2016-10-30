@@ -15,7 +15,7 @@ window.onload = function () {
                 } else if (data.colour == 'blue') {
                     colour = 2;
                 }
-                addVote(data.column, colour);
+                addVote(data.column, currTeam);
             });
 
             currTeam = 1;
@@ -71,7 +71,7 @@ window.onload = function () {
             setTeam();
             var fiveMinutes = 60 * 5,
             display = document.querySelector('#time');
-            startTimer(10, display);
+            startTimer(15, display);
             }
 
         function refreshCharts() {
