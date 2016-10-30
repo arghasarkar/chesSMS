@@ -1,192 +1,214 @@
 <!DOCTYPE HTML>
 <html>
 <head>
-<script type="text/javascript" src="canvasjs.min.js"></script>
-<link rel="stylesheet/css" type="text/css" href="style.css">
-<script type="text/javascript">
 
-window.onload = function () {
-    currTeam = 1;
-    chart1 = new CanvasJS.Chart("chartContainer1",
-    {
-        title:{
-          text: "Connect 4"
-        },
-        axisY: {
-          title: "Votes"
-        },
+    <script src="https://js.pusher.com/3.2/pusher.min.js"></script>
+    <script type="text/javascript" src="canvasjs.min.js"></script>
+    <link rel="stylesheet/css" type="text/css" href="style.css">
 
-        data: [
-        {
-          color: "#FF0000",
+    <script type="text/javascript">
 
-          dataPoints: [
-          { x: 10, y: 0, label: "Col 1"},
-          { x: 20, y: 0,  label: "Col 2" },
-          { x: 30, y: 0,  label: "Col 3"},
-          { x: 40, y: 0,  label: "Col 4"},
-          { x: 50, y: 0,  label: "Col 5"},
-          { x: 60, y: 0, label: "Col 6"},
-          { x: 70, y: 0,  label: "Col 7"}
-          ]
-        }
-        ]
-    });
 
-    chart2 = new CanvasJS.Chart("chartContainer2",
-    {
-        title:{
-          text: "Connect 4"
-        },
-        axisY: {
-          title: "Votes"
-        },
+        // Enable pusher logging - don't include this in production
+        Pusher.logToConsole = true;
 
-        data: [
-        {
-          color: "#0000FF",
+        var pusher = new Pusher('67569bcf687f83becd73', {
+            encrypted: true
+        });
 
-          dataPoints: [
-          { x: 10, y: 0, label: "Col 1"},
-          { x: 20, y: 0,  label: "Col 2" },
-          { x: 30, y: 0,  label: "Col 3"},
-          { x: 40, y: 0,  label: "Col 4"},
-          { x: 50, y: 0,  label: "Col 5"},
-          { x: 60, y: 0, label: "Col 6"},
-          { x: 70, y: 0,  label: "Col 7"}
-          ]
-        }
-        ]
-    });
+        var channel = pusher.subscribe('test_channel');
+        channel.bind('newvote', function(data) {
+            var colour = null;
+            if (data.colour == 'red') {
+                colour = 1;
+            } else if (data.colour == 'blue') {
+                colour = 2;
+            }
+            addVote(data.column, colour);
+        });
 
-    // Main program
-    refreshCharts();
-    setTeam();
-}
+        window.onload = function () {
+            currTeam = 1;
+            chart1 = new CanvasJS.Chart("chartContainer1",
+            {
+                title:{
+                  text: "Connect 4"
+                },
+                axisY: {
+                  title: "Votes"
+                },
 
-function refreshCharts() {
-    chart1.render();
-    chart2.render();
-    console.log("Charts updated");
-}
+                data: [
+                {
+                  color: "#FF0000",
 
-function resetChart(chartNum) {
-    if (chartNum == 1) {
-        chart1.options.data[0].dataPoints = [
-        { x: 10, y: 0, label: "Col 1"},
-        { x: 20, y: 0, label: "Col 2" },
-        { x: 30, y: 0, label: "Col 3"},
-        { x: 40, y: 0, label: "Col 4"},
-        { x: 50, y: 0, label: "Col 5"},
-        { x: 60, y: 0, label: "Col 6"},
-        { x: 70, y: 0, label: "Col 7"}
-        ];
-        refreshCharts();
+                  dataPoints: [
+                  { x: 10, y: 0, label: "Col 1"},
+                  { x: 20, y: 0,  label: "Col 2" },
+                  { x: 30, y: 0,  label: "Col 3"},
+                  { x: 40, y: 0,  label: "Col 4"},
+                  { x: 50, y: 0,  label: "Col 5"},
+                  { x: 60, y: 0, label: "Col 6"},
+                  { x: 70, y: 0,  label: "Col 7"}
+                  ]
+                }
+                ]
+            });
+
+            chart2 = new CanvasJS.Chart("chartContainer2",
+            {
+                title:{
+                  text: "Connect 4"
+                },
+                axisY: {
+                  title: "Votes"
+                },
+
+                data: [
+                {
+                  color: "#0000FF",
+
+                  dataPoints: [
+                  { x: 10, y: 0, label: "Col 1"},
+                  { x: 20, y: 0,  label: "Col 2" },
+                  { x: 30, y: 0,  label: "Col 3"},
+                  { x: 40, y: 0,  label: "Col 4"},
+                  { x: 50, y: 0,  label: "Col 5"},
+                  { x: 60, y: 0, label: "Col 6"},
+                  { x: 70, y: 0,  label: "Col 7"}
+                  ]
+                }
+                ]
+            });
+
+            // Main program
+            refreshCharts();
+            setTeam();
     }
 
-    else if (chartNum == 2) {
-        chart2.options.data[0].dataPoints = [
-        { x: 10, y: 0, label: "Col 1"},
-        { x: 20, y: 0, label: "Col 2" },
-        { x: 30, y: 0, label: "Col 3"},
-        { x: 40, y: 0, label: "Col 4"},
-        { x: 50, y: 0, label: "Col 5"},
-        { x: 60, y: 0, label: "Col 6"},
-        { x: 70, y: 0, label: "Col 7"}
-        ];
-        refreshCharts();
-    }
-}
-
-function updateChart(position, addValue, chartNum) {
-    if (chartNum == 1) {
-        chart1.options.data[0].dataPoints[position].y = addValue;
-        console.log("Value " + addValue + " added to position " + (position + 1));
-    }
-
-    else if (chartNum == 2) {
-        chart2.options.data[0].dataPoints[position].y = addValue;
-        console.log("Value " + addValue + " added to position " + (position + 1));
-    }
-}
-
-function addVote(pos, chartNum) {
-    if (chartNum == 1) {
-        chart1.options.data[0].dataPoints[pos].y += 1;
-        console.log("Added vote to column " + (pos + 1));
+    function refreshCharts() {
         chart1.render();
-    }
-
-    else if (chartNum == 2) {
-        chart2.options.data[0].dataPoints[pos].y += 1;
-        console.log("Added vote to column " + (pos + 1));
         chart2.render();
+        console.log("Charts updated");
     }
-}
 
-function fetchHighestVote(chartNum) {
-    var highVal = 0;
-    var colNum;
-    if (chartNum == 1) {
-        for (i = 0; i < 7; i++) {
-            if (chart1.options.data[0].dataPoints[i].y > highVal) {
-                highVal = chart1.options.data[0].dataPoints[i].y;
-                colNum = i;
-            }
+    function resetChart(chartNum) {
+        if (chartNum == 1) {
+            chart1.options.data[0].dataPoints = [
+            { x: 10, y: 0, label: "Col 1"},
+            { x: 20, y: 0, label: "Col 2" },
+            { x: 30, y: 0, label: "Col 3"},
+            { x: 40, y: 0, label: "Col 4"},
+            { x: 50, y: 0, label: "Col 5"},
+            { x: 60, y: 0, label: "Col 6"},
+            { x: 70, y: 0, label: "Col 7"}
+            ];
+            refreshCharts();
+        }
+
+        else if (chartNum == 2) {
+            chart2.options.data[0].dataPoints = [
+            { x: 10, y: 0, label: "Col 1"},
+            { x: 20, y: 0, label: "Col 2" },
+            { x: 30, y: 0, label: "Col 3"},
+            { x: 40, y: 0, label: "Col 4"},
+            { x: 50, y: 0, label: "Col 5"},
+            { x: 60, y: 0, label: "Col 6"},
+            { x: 70, y: 0, label: "Col 7"}
+            ];
+            refreshCharts();
         }
     }
-    else if (chartNum == 2) {
-        for (i = 0; i < 7; i++) {
-            if (chart2.options.data[0].dataPoints[i].y > highVal) {
-                highVal = chart2.options.data[0].dataPoints[i].y;
-                colNum = i;
-            }
+
+    function updateChart(position, addValue, chartNum) {
+        if (chartNum == 1) {
+            chart1.options.data[0].dataPoints[position].y = addValue;
+            console.log("Value " + addValue + " added to position " + (position + 1));
+        }
+
+        else if (chartNum == 2) {
+            chart2.options.data[0].dataPoints[position].y = addValue;
+            console.log("Value " + addValue + " added to position " + (position + 1));
         }
     }
-    console.log("Highest vote was col " + (colNum + 1));
-    return colNum;
-}
 
-function setTeam() {
-    currTeam = 1;
-    teamHead.innerText = "Red Team's Move";
-    teamHead.style.color = "red";
-}
+    function addVote(pos, chartNum) {
+        if (chartNum == 1) {
+            chart1.options.data[0].dataPoints[pos].y += 1;
+            console.log("Added vote to column " + (pos + 1));
+            chart1.render();
+        }
 
-function switchTeam() {
-    if (currTeam == 1) {
-        currTeam = 2;
-        teamHead.innerText = "Blue Team's Move";
-        teamHead.style.color = "blue";
+        else if (chartNum == 2) {
+            chart2.options.data[0].dataPoints[pos].y += 1;
+            console.log("Added vote to column " + (pos + 1));
+            chart2.render();
+        }
     }
 
-    else if (currTeam == 2) {
+    function fetchHighestVote(chartNum) {
+        var highVal = 0;
+        var colNum;
+        if (chartNum == 1) {
+            for (i = 0; i < 7; i++) {
+                if (chart1.options.data[0].dataPoints[i].y > highVal) {
+                    highVal = chart1.options.data[0].dataPoints[i].y;
+                    colNum = i;
+                }
+            }
+        }
+        else if (chartNum == 2) {
+            for (i = 0; i < 7; i++) {
+                if (chart2.options.data[0].dataPoints[i].y > highVal) {
+                    highVal = chart2.options.data[0].dataPoints[i].y;
+                    colNum = i;
+                }
+            }
+        }
+        console.log("Highest vote was col " + (colNum + 1));
+        return colNum;
+    }
+
+    function setTeam() {
         currTeam = 1;
         teamHead.innerText = "Red Team's Move";
         teamHead.style.color = "red";
     }
-}
 
-// Where the business end is
-function makeMove() {
-    if (currTeam == 1) {
-        redMove = fetchHighestVote(1);
-        console.log("Sent off Red move");
-        // Pass red move to board HTML
-        resetChart(1);
-        switchTeam();
+    function switchTeam() {
+        if (currTeam == 1) {
+            currTeam = 2;
+            teamHead.innerText = "Blue Team's Move";
+            teamHead.style.color = "blue";
+        }
+
+        else if (currTeam == 2) {
+            currTeam = 1;
+            teamHead.innerText = "Red Team's Move";
+            teamHead.style.color = "red";
+        }
     }
 
-    else if (currTeam == 2) {
-        blueMove = fetchHighestVote(2);
-        console.log("Sent off Blue move");
-        // Pass red move to board HTML
-        resetChart(2);
-        switchTeam();
-    }
-}
+    // Where the business end is
+    function makeMove() {
+        if (currTeam == 1) {
+            redMove = fetchHighestVote(1);
+            console.log("Sent off Red move");
+            // Pass red move to board HTML
+            resetChart(1);
+            switchTeam();
+        }
 
-</script>
+        else if (currTeam == 2) {
+            blueMove = fetchHighestVote(2);
+            console.log("Sent off Blue move");
+            // Pass red move to board HTML
+            resetChart(2);
+            switchTeam();
+        }
+    }
+
+    </script>
 </head>
 <body>
 
