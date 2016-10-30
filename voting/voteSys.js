@@ -186,31 +186,8 @@ function httpGet(theUrl, column, colour)
     console.log(theUrl + "?" + params);
     // Need to send column and colour
     xmlHttp.send( null );
-    return xmlHttp.responseText;
 }
 
-// Where the business end is
-function makeMove() {
-    if (currTeam == 1) {
-        redMove = fetchHighestVote(1);
-        httpGet("http://www.bbc.co.uk/", redMove, "red");
-        console.log("Sent off Red move");
-        // Pass red move to board HTML
-        // #CHANGE URL
-        resetChart(1);
-        switchTeam();
-    }
-
-    else if (currTeam == 2) {
-        blueMove = fetchHighestVote(2);
-        console.log("Sent off Blue move");
-        // Pass red move to board HTML
-        // #CHANGE URL
-        httpGet("http://www.bbc.co.uk/", blueMove, "blue");
-        resetChart(2);
-        switchTeam();
-    }
-}
 
 function refreshCharts() {
     chart1.render();
@@ -319,22 +296,22 @@ function switchTeam() {
 function makeMove() {
     if (currTeam == 1) {
         redMove = fetchHighestVote(1);
-        redMove++;
         console.log("Sent off Red move - " + redMove);
+        httpGet("http://6ab661b9.ngrok.io/updateGame.php", redMove, "red");
         //newMove(redMove, "red");
         // Pass red move to board HTML
-        resetChart(1);
         switchTeam();
+        resetChart(1);
     }
 
     else if (currTeam == 2) {
         blueMove = fetchHighestVote(2);
-        blueMove++;
         console.log("Sent off Blue move - " + blueMove);
+        httpGet("http://6ab661b9.ngrok.io/updateGame.php", blueMove, "blue");
         //makeMove(blueMove, "blue");
         // Pass red move to board HTML
-        resetChart(2);
         switchTeam();
+        resetChart(2);
     }
 }
 
