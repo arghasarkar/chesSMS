@@ -43,6 +43,7 @@ function newMove(column, color) {
         state[columnHeight][column - 1] = color;
     }
     render();
+    // checkWinningMove();
 }
 
 function getColumnHeight(column) {
