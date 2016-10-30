@@ -167,6 +167,7 @@ function switchTeam() {
 function makeMove() {
     if (currTeam == 1) {
         redMove = fetchHighestVote(1);
+        redMove++;
         console.log("Sent off Red move - " + redMove);
         //newMove(redMove, "red");
         // Pass red move to board HTML
@@ -176,7 +177,8 @@ function makeMove() {
 
     else if (currTeam == 2) {
         blueMove = fetchHighestVote(2);
-        console.log("Sent off Blue move");
+        blueMove++;
+        console.log("Sent off Blue move - " + blueMove);
         //makeMove(blueMove, "blue");
         // Pass red move to board HTML
         resetChart(2);
