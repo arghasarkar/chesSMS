@@ -72,129 +72,145 @@ window.onload = function () {
             var fiveMinutes = 60 * 5,
             display = document.querySelector('#time');
             startTimer(10, display);
-            }
+}
 
-        function refreshCharts() {
-            chart1.render();
-            chart2.render();
-            console.log("Charts updated");
-        }
+function refreshCharts() {
+    chart1.render();
+    chart2.render();
+    console.log("Charts updated");
+}
 
-        function resetChart(chartNum) {
-            if (chartNum == 1) {
-                chart1.options.data[0].dataPoints = [
-                { x: 10, y: 0, label: "Col 1"},
-                { x: 20, y: 0, label: "Col 2" },
-                { x: 30, y: 0, label: "Col 3"},
-                { x: 40, y: 0, label: "Col 4"},
-                { x: 50, y: 0, label: "Col 5"},
-                { x: 60, y: 0, label: "Col 6"},
-                { x: 70, y: 0, label: "Col 7"}
-                ];
-                refreshCharts();
-            }
+function resetChart(chartNum) {
+    if (chartNum == 1) {
+        chart1.options.data[0].dataPoints = [
+        { x: 10, y: 0, label: "Col 1"},
+        { x: 20, y: 0, label: "Col 2" },
+        { x: 30, y: 0, label: "Col 3"},
+        { x: 40, y: 0, label: "Col 4"},
+        { x: 50, y: 0, label: "Col 5"},
+        { x: 60, y: 0, label: "Col 6"},
+        { x: 70, y: 0, label: "Col 7"}
+        ];
+        refreshCharts();
+    }
 
-            else if (chartNum == 2) {
-                chart2.options.data[0].dataPoints = [
-                { x: 10, y: 0, label: "Col 1"},
-                { x: 20, y: 0, label: "Col 2" },
-                { x: 30, y: 0, label: "Col 3"},
-                { x: 40, y: 0, label: "Col 4"},
-                { x: 50, y: 0, label: "Col 5"},
-                { x: 60, y: 0, label: "Col 6"},
-                { x: 70, y: 0, label: "Col 7"}
-                ];
-                refreshCharts();
-            }
-        }
+    else if (chartNum == 2) {
+        chart2.options.data[0].dataPoints = [
+        { x: 10, y: 0, label: "Col 1"},
+        { x: 20, y: 0, label: "Col 2" },
+        { x: 30, y: 0, label: "Col 3"},
+        { x: 40, y: 0, label: "Col 4"},
+        { x: 50, y: 0, label: "Col 5"},
+        { x: 60, y: 0, label: "Col 6"},
+        { x: 70, y: 0, label: "Col 7"}
+        ];
+        refreshCharts();
+    }
+}
 
-        function updateChart(position, addValue, chartNum) {
-            if (chartNum == 1) {
-                chart1.options.data[0].dataPoints[position].y = addValue;
-                console.log("Value " + addValue + " added to position " + (position + 1));
-            }
+function updateChart(position, addValue, chartNum) {
+    if (chartNum == 1) {
+        chart1.options.data[0].dataPoints[position].y = addValue;
+        console.log("Value " + addValue + " added to position " + (position + 1));
+    }
 
-            else if (chartNum == 2) {
-                chart2.options.data[0].dataPoints[position].y = addValue;
-                console.log("Value " + addValue + " added to position " + (position + 1));
-            }
-        }
+    else if (chartNum == 2) {
+        chart2.options.data[0].dataPoints[position].y = addValue;
+        console.log("Value " + addValue + " added to position " + (position + 1));
+    }
+}
 
-        function addVote(pos, chartNum) {
-            if (chartNum == 1) {
-                chart1.options.data[0].dataPoints[pos].y += 1;
-                console.log("Added vote to column " + (pos + 1));
-                chart1.render();
-            }
+function addVote(pos, chartNum) {
+    if (chartNum == 1) {
+        chart1.options.data[0].dataPoints[pos].y += 1;
+        console.log("Added vote to column " + (pos + 1));
+        chart1.render();
+    }
 
-            else if (chartNum == 2) {
-                chart2.options.data[0].dataPoints[pos].y += 1;
-                console.log("Added vote to column " + (pos + 1));
-                chart2.render();
-            }
-        }
+    else if (chartNum == 2) {
+        chart2.options.data[0].dataPoints[pos].y += 1;
+        console.log("Added vote to column " + (pos + 1));
+        chart2.render();
+    }
+}
 
-        function fetchHighestVote(chartNum) {
-            var highVal = 0;
-            var colNum;
-            if (chartNum == 1) {
-                for (i = 0; i < 7; i++) {
-                    if (chart1.options.data[0].dataPoints[i].y > highVal) {
-                        highVal = chart1.options.data[0].dataPoints[i].y;
-                        colNum = i;
-                    }
-                }
-            }
-            else if (chartNum == 2) {
-                for (i = 0; i < 7; i++) {
-                    if (chart2.options.data[0].dataPoints[i].y > highVal) {
-                        highVal = chart2.options.data[0].dataPoints[i].y;
-                        colNum = i;
-                    }
-                }
-            }
-            console.log("Highest vote was col " + (colNum + 1));
-            return colNum;
-        }
-
-        function setTeam() {
-            currTeam = 1;
-            teamHead.innerText = "Red Team's Move";
-            teamHead.style.color = "red";
-        }
-
-        function switchTeam() {
-            if (currTeam == 1) {
-                currTeam = 2;
-                teamHead.innerText = "Blue Team's Move";
-                teamHead.style.color = "blue";
-            }
-
-            else if (currTeam == 2) {
-                currTeam = 1;
-                teamHead.innerText = "Red Team's Move";
-                teamHead.style.color = "red";
+function fetchHighestVote(chartNum) {
+    var highVal = 0;
+    var colNum;
+    if (chartNum == 1) {
+        for (i = 0; i < 7; i++) {
+            if (chart1.options.data[0].dataPoints[i].y > highVal) {
+                highVal = chart1.options.data[0].dataPoints[i].y;
+                colNum = i;
             }
         }
-
-        // Where the business end is
-        function makeMove() {
-            if (currTeam == 1) {
-                redMove = fetchHighestVote(1);
-                console.log("Sent off Red move");
-                // Pass red move to board HTML
-                resetChart(1);
-                switchTeam();
-            }
-
-            else if (currTeam == 2) {
-                blueMove = fetchHighestVote(2);
-                console.log("Sent off Blue move");
-                // Pass red move to board HTML
-                resetChart(2);
-                switchTeam();
+    }
+    else if (chartNum == 2) {
+        for (i = 0; i < 7; i++) {
+            if (chart2.options.data[0].dataPoints[i].y > highVal) {
+                highVal = chart2.options.data[0].dataPoints[i].y;
+                colNum = i;
             }
         }
+    }
+    console.log("Highest vote was col " + (colNum + 1));
+    return colNum;
+}
+
+function setTeam() {
+    currTeam = 1;
+    teamHead.innerText = "Red Team's Move";
+    teamHead.style.color = "red";
+}
+
+function switchTeam() {
+    if (currTeam == 1) {
+        currTeam = 2;
+        teamHead.innerText = "Blue Team's Move";
+        teamHead.style.color = "blue";
+    }
+
+    else if (currTeam == 2) {
+        currTeam = 1;
+        teamHead.innerText = "Red Team's Move";
+        teamHead.style.color = "red";
+    }
+}
+
+//HTTP request
+function httpGet(theUrl, column, colour)
+{
+    var xmlHttp = new XMLHttpRequest();
+    var params = "column=" + column + "colour=" + colour;
+    xmlHttp.open( "GET", theUrl + "?" + params, false ); // false for synchronous request
+    console.log(theUrl + "?" + params);
+    // Need to send column and colour
+    xmlHttp.send( null );
+    return xmlHttp.responseText;
+}
+
+// Where the business end is
+function makeMove() {
+    if (currTeam == 1) {
+        redMove = fetchHighestVote(1);
+        httpGet("http://www.bbc.co.uk/", redMove, "red");
+        console.log("Sent off Red move");
+        // Pass red move to board HTML
+        // #CHANGE URL
+        resetChart(1);
+        switchTeam();
+    }
+
+    else if (currTeam == 2) {
+        blueMove = fetchHighestVote(2);
+        console.log("Sent off Blue move");
+        // Pass red move to board HTML
+        // #CHANGE URL
+        httpGet("http://www.bbc.co.uk/", blueMove, "blue");
+        resetChart(2);
+        switchTeam();
+    }
+}
 
 function refreshCharts() {
     chart1.render();
